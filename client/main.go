@@ -20,6 +20,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 	}
 
+	// request server for information with token
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "http://localhost:9000/", nil)
 	req.Header.Set("Token", validToken)
@@ -29,6 +30,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Error: %s", err.Error())
 	}
 
+	// parse body
 	body, err := ioutil.ReadAll(res.Body)
 	// if err, throw err
 	if err != nil {
@@ -40,6 +42,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleRequests() {
+	// create route
 	http.HandleFunc("/", homePage)
 
 	port := 9001
