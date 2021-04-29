@@ -28,7 +28,7 @@ func handleRequests() {
 
 	port := 9001
 
-	fmt.Printf("Booting up server on port:%d", port)
+	fmt.Printf("Booting up client server on port:%d", port)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(port), nil))
 }
 
