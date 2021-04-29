@@ -2,10 +2,35 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
+
+func homePage(w http.ResponseWriter, r *http.Request) {
+	// create new token
+	validToken, err := GenerateJWT()
+
+	// if err, throw err
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+
+	// respond with token
+	fmt.Fprintf(w, validToken)
+}
+
+func handleRequests() {
+	http.HandleFunc("/", homePage)
+
+	port := 9001
+
+	fmt.Printf("Booting up server on port:%d", port)
+	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(port), nil))
+}
 
 // password for key generation (use env variables for this in production)
 // var mySigningKey = os.Get("MY_JWT_TOKEN")
@@ -40,9 +65,5 @@ func GenerateJWT() (string, error) {
 
 // Main Program
 func main() {
-	// generate key
-	tokenString, _ := GenerateJWT()
-
-	// print key (debugging)
-	fmt.Println(tokenString)
+	handleRequests()
 }
